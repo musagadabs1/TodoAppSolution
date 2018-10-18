@@ -29,7 +29,6 @@ namespace TodoApp.Controllers
             {
                 Administrators = admins,
                 Everyone = everyone
-
             };
 
             return View(model);
