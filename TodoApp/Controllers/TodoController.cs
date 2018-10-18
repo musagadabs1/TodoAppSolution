@@ -29,5 +29,19 @@ namespace TodoApp.Controllers
             // Pass the view to a model and render
             return View(model);
         }
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddItem(TodoItem newItem)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            var success = await _todoItemService.AddItemAsync(newItem);
+            if (!success)
+            {
+                return BadRequest("Could not add Item");
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

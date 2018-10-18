@@ -44,7 +44,7 @@ namespace TodoApp
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //Added ITodo Service for data retrieval
-            services.AddSingleton<ITodoItemService, FakeTodoItemService>();
+            services.AddScoped<ITodoItemService, TodoItemService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
