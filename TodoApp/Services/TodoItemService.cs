@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TodoApp.Data;
 using TodoApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace TodoApp.Services
 {
@@ -16,7 +17,7 @@ namespace TodoApp.Services
             _db = db;
         }
 
-        public async Task<bool> AddItemAsync(TodoItem newItem, ApplicationUser user)
+        public async Task<bool> AddItemAsync(TodoItem newItem, IdentityUser user)
         {
             newItem.Id = Guid.NewGuid();
             newItem.IsDone = false;
@@ -29,13 +30,23 @@ namespace TodoApp.Services
             //throw new NotImplementedException();
         }
 
-        public async Task<TodoItem[]> GetInCompleteItemsAsync(ApplicationUser user)
+        //public Task<bool> AddItemAsync(TodoItem newItem, ApplicationUser user)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public async Task<TodoItem[]> GetInCompleteItemsAsync(IdentityUser user)
         {
             var items = await _db.Items.Where(x => x.IsDone == false && x.UserId==user.Id).ToArrayAsync();
             return items;
         }
 
-        public async Task<bool> MarkDoneAsync(Guid id,ApplicationUser user)
+        //public Task<TodoItem[]> GetInCompleteItemsAsync(ApplicationUser user)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public async Task<bool> MarkDoneAsync(Guid id,IdentityUser user)
         {
            // var currentUser= await 
             var item = await _db.Items.Where(x => x.Id == id && x.UserId==user.Id).SingleOrDefaultAsync();
@@ -48,5 +59,9 @@ namespace TodoApp.Services
             return saveResult == 1;
         }
 
+        //public Task<bool> MarkDoneAsync(Guid id, ApplicationUser user)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

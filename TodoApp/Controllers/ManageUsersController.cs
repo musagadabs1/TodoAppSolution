@@ -13,9 +13,9 @@ namespace TodoApp.Controllers
     [Authorize(Roles="Administrator")]
     public class ManageUsersController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ManageUsersController(UserManager<ApplicationUser> userManager)
+        public ManageUsersController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
         }

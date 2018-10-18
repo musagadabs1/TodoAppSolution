@@ -17,7 +17,7 @@ namespace TodoApp
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             await EnsureRolesAsync(roleManager);
 
-            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
             await EnsureTestAdminAsync(userManager);
         }
         private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
@@ -31,14 +31,14 @@ namespace TodoApp
             await roleManager.CreateAsync(new IdentityRole(Models.Constants.AdministratorRole));
         }
 
-        public static async Task EnsureTestAdminAsync(UserManager<ApplicationUser> userManager)
+        public static async Task EnsureTestAdminAsync(UserManager<IdentityUser> userManager)
         {
             var testAdmin = await userManager.Users.Where(x => x.UserName == "musagadabs1@yahoo.com").SingleOrDefaultAsync();
             if (testAdmin !=null)
             {
                 return;
             }
-            testAdmin = new ApplicationUser
+            testAdmin = new IdentityUser
             {
                 UserName = "musagadabs1@yahoo.com",
                 Email="musagadabs1@yahoo.com"

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,8 +9,8 @@ namespace TodoApp.Services
 {
     public interface ITodoItemService
     {
-        Task<TodoItem[]> GetInCompleteItemsAsync(ApplicationUser user);
-        Task<bool> AddItemAsync(TodoItem newItem,ApplicationUser user);
-        Task<bool> MarkDoneAsync(Guid id,ApplicationUser user);
+        Task<TodoItem[]> GetInCompleteItemsAsync(IdentityUser user);
+        Task<bool> AddItemAsync(TodoItem newItem,IdentityUser user);
+        Task<bool> MarkDoneAsync(Guid id,IdentityUser user);
     }
 }
