@@ -8,7 +8,8 @@ namespace TodoApp.Services
 {
     public interface ITodoItemService
     {
-        Task<TodoItem[]> GetInCompleteItemsAsync();
-        Task<bool> AddItemAsync(TodoItem newItem);
+        Task<TodoItem[]> GetInCompleteItemsAsync(ApplicationUser user);
+        Task<bool> AddItemAsync(TodoItem newItem,ApplicationUser user);
+        Task<bool> MarkDoneAsync(Guid id,ApplicationUser user);
     }
 }

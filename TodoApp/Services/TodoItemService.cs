@@ -16,11 +16,12 @@ namespace TodoApp.Services
             _db = db;
         }
 
-        public async Task<bool> AddItemAsync(TodoItem newItem)
+        public async Task<bool> AddItemAsync(TodoItem newItem, ApplicationUser user)
         {
             newItem.Id = Guid.NewGuid();
             newItem.IsDone = false;
             newItem.DueAt = DateTimeOffset.Now.AddDays(3);
+            newItem.UserId = user.Id;
             _db.Items.Add(newItem);
 
             var saveResult = await _db.SaveChangesAsync();
@@ -28,10 +29,24 @@ namespace TodoApp.Services
             //throw new NotImplementedException();
         }
 
-        public async Task<TodoItem[]> GetInCompleteItemsAsync()
+        public async Task<TodoItem[]> GetInCompleteItemsAsync(ApplicationUser user)
         {
-            var items = await _db.Items.Where(x => x.IsDone == false).ToArrayAsync();
+            var items = await _db.Items.Where(x => x.IsDone == false && x.UserId==user.Id).ToArrayAsync();
             return items;
         }
+
+        public async Task<bool> MarkDoneAsync(Guid id,ApplicationUser user)
+        {
+           // var currentUser= await 
+            var item = await _db.Items.Where(x => x.Id == id && x.UserId==user.Id).SingleOrDefaultAsync();
+            if (item==null)
+            {
+                return false;
+            }
+            item.IsDone = true;
+            var saveResult = await _db.SaveChangesAsync();
+            return saveResult == 1;
+        }
+
     }
 }
