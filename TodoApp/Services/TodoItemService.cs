@@ -21,6 +21,7 @@ namespace TodoApp.Services
             newItem.Id = Guid.NewGuid();
             newItem.IsDone = false;
             newItem.DueAt = DateTimeOffset.Now.AddDays(3);
+            newItem.UserId = user.Id;
             _db.Items.Add(newItem);
 
             var saveResult = await _db.SaveChangesAsync();
