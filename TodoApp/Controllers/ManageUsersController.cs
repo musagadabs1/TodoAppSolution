@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TodoApp.Controllers
 {
@@ -18,9 +19,20 @@ namespace TodoApp.Controllers
         {
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var admins = (await _userManager.GetUsersInRoleAsync("Administrator")).ToArray();
+
+            var everyone = await _userManager.Users.ToArrayAsync();
+
+            var model = new ManageUserViewModel()
+            {
+                Administrators = admins,
+                Everyone = everyone
+
+            };
+
+            return View(model);
         }
     }
 }
