@@ -2,24 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Models;
 using TodoApp.Services;
 
 namespace TodoApp.Controllers
 {
+    [Authorize]
     public class TodoController : Controller
     {
         private ITodoItemService _todoItemService;
+        private UserManager<ApplicationUser> _userManager;
 
-        public TodoController(ITodoItemService todoItemService)
+        public TodoController(ITodoItemService todoItemService,UserManager<ApplicationUser> userManager)
         {
             _todoItemService = todoItemService;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser==null)
+            {
+                return Challenge();
+            }
             // Get to-do items from database
-            var items = await _todoItemService.GetInCompleteItemsAsync();
+            var items = await _todoItemService.GetInCompleteItemsAsync(currentUser);
 
             // Put items into a model
             var model = new TodoViewModel()
@@ -36,10 +47,29 @@ namespace TodoApp.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var success = await _todoItemService.AddItemAsync(newItem);
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (currentUser==null)
+            {
+                return Challenge();
+            }
+            var success = await _todoItemService.AddItemAsync(newItem,currentUser);
             if (!success)
             {
                 return BadRequest("Could not add Item");
+            }
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> MarkDone(Guid id)
+        {
+            if (id==Guid.Empty)
+            {
+                return RedirectToAction("Index");
+            }
+            var successful = await _todoItemService.MarkDoneAsync(id);
+            if (!successful)
+            {
+                return BadRequest("Could not mark item as done");
             }
             return RedirectToAction("Index");
         }
