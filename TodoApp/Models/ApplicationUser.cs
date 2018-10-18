@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TodoApp.Models
 {
-    //public class ApplicationUser:IdentityUser
-    //{
+    public class ApplicationUser : IdentityUser
+    {
 
-    //}
+    }
 }
