@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TodoApp.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class ManageUserViewModel
     {
-
+        public IdentityUser[] Administrators { get; set; }
+        public IdentityUser[] Everyone { get; set; }
     }
 }

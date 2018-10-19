@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TodoApp.Data;
 using TodoApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace TodoApp.Services
 {
@@ -28,13 +29,11 @@ namespace TodoApp.Services
             return saveResult == 1;
             //throw new NotImplementedException();
         }
-
         public async Task<TodoItem[]> GetInCompleteItemsAsync(ApplicationUser user)
         {
             var items = await _db.Items.Where(x => x.IsDone == false && x.UserId==user.Id).ToArrayAsync();
             return items;
         }
-
         public async Task<bool> MarkDoneAsync(Guid id,ApplicationUser user)
         {
            // var currentUser= await 
