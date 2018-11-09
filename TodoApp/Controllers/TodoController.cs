@@ -14,9 +14,9 @@ namespace TodoApp.Controllers
     public class TodoController : Controller
     {
         private ITodoItemService _todoItemService;
-        private UserManager<ApplicationUser> _userManager;
+        private UserManager<IdentityUser> _userManager;
 
-        public TodoController(ITodoItemService todoItemService,UserManager<ApplicationUser> userManager)
+        public TodoController(ITodoItemService todoItemService,UserManager<IdentityUser> userManager)
         {
             _todoItemService = todoItemService;
             _userManager = userManager;
